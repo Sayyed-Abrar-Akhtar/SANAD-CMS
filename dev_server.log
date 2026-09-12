@@ -1,0 +1,87 @@
+
+> ai-powered-cms@1.0.0 dev
+> next dev
+
+▲ Next.js 16.3.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 549ms
+✓ Running next.config took 16ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+  The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+	- include was updated to add '.next/dev/types/**/*.ts'
+
+  The following mandatory changes were made to your tsconfig.json:
+
+	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+
+
+ HEAD /dashboard 200 in 3.1s (next.js: 2.9s, application-code: 236ms)
+ GET /dashboard 200 in 102ms (next.js: 17ms, application-code: 85ms)
+ POST /api/cms/tenants/bind 200 in 1281ms (next.js: 1194ms, application-code: 87ms)
+[Slack Simulation] Sent notification: {
+  "text": "🚨 AI CMS Change Pending Review",
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "🛠️ Build Succeeded — Ready for Review"
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*User Prompt:*\n\"Update homepage hero headline to \"Next-Gen AI Storefront\"\""
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Tenant:*\nAcme Storefront"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*PR:*\n<https://github.com/acmeco/storefront/pull/42>"
+      }
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Approve & Merge ✅"
+          },
+          "style": "primary",
+          "value": "merge_pr_42_job_job-1789230494247-cj3jf0",
+          "action_id": "approve_cms_change"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "Reject & Close ❌"
+          },
+          "style": "danger",
+          "value": "close_pr_42_job_job-1789230494247-cj3jf0",
+          "action_id": "reject_cms_change"
+        }
+      ]
+    }
+  ]
+}
+ POST /api/cms/requests?format=text 202 in 345ms (next.js: 307ms, application-code: 38ms)
+ GET /api/cms/requests/job-1789230494247-cj3jf0/stream 200 in 2.9s (next.js: 1591ms, application-code: 1304ms)
