@@ -1,5 +1,15 @@
 import { Tenant, Job, AuditLog } from '@/types';
 
+interface PromptTemplate {
+  id: string;
+  tenantId: string;
+  title: string;
+  body: string;
+  isQuickSubmit: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // In-memory persistent datastore for the orchestrator
 class Store {
   private tenants: Map<string, Tenant> = new Map();
@@ -7,6 +17,7 @@ class Store {
   private auditLogs: AuditLog[] = [];
   private idempotencyKeys: Map<string, string> = new Map(); // key -> jobId
   private repoLocks: Map<string, string> = new Map(); // repoKey ("owner/repo") -> currentJobId
+  private promptTemplates: Map<string, PromptTemplate> = new Map();
 
   constructor() {
     // Seed default tenant for immediate testing / development
@@ -104,6 +115,29 @@ class Store {
     return this.repoLocks.has(repoKey);
   }
 
+  // Prompt Template methods
+  getPromptTemplate(id: string): PromptTemplate | undefined {
+    return this.promptTemplates.get(id);
+  }
+
+  getPromptTemplatesByTenant(tenantId: string): PromptTemplate[] {
+    return Array.from(this.promptTemplates.values()).filter((t) => t.tenantId === tenantId);
+  }
+
+  getAllPromptTemplates(): PromptTemplate[] {
+    return Array.from(this.promptTemplates.values());
+  }
+
+  savePromptTemplate(template: PromptTemplate): PromptTemplate {
+    template.updatedAt = new Date().toISOString();
+    this.promptTemplates.set(template.id, template);
+    return template;
+  }
+
+  deletePromptTemplate(id: string): void {
+    this.promptTemplates.delete(id);
+  }
+
   // Reset store for testing
   reset(): void {
     this.tenants.clear();
@@ -111,6 +145,7 @@ class Store {
     this.auditLogs = [];
     this.idempotencyKeys.clear();
     this.repoLocks.clear();
+    this.promptTemplates.clear();
   }
 }
 

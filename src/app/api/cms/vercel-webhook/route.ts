@@ -1,9 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { store } from '@/lib/store';
+import { verifyVercelSignature } from '@/lib/vercel_webhook';
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    // 1. Get raw body for signature verification
+    const rawBody = await req.text();
+    const signatureHeader = req.headers.get('x-vercel-signature');
+    const webhookSecret = process.env.VERCEL_WEBHOOK_SECRET || 'mock-vercel-webhook-secret';
+
+    // 2. Verify Vercel Signature unless in bypass simulation mode
+    if (process.env.NODE_ENV !== 'test' && webhookSecret !== 'mock-vercel-webhook-secret') {
+      const isValid = verifyVercelSignature({
+        secret: webhookSecret,
+        signatureHeader,
+        rawBody,
+      });
+
+      if (!isValid) {
+        return NextResponse.json(
+          { error: 'Invalid Vercel signature or request timestamp expired' },
+          { status: 401 }
+        );
+      }
+    }
+
+    // 3. Parse JSON body
+    const body = JSON.parse(rawBody);
 
     // Vercel deployment event webhook handling
     // Expected Vercel event types: "deployment.succeeded" | "deployment.error" | "deployment.created"
